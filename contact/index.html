@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Contact | Dhruv Mittal</title>
+    <link rel="stylesheet" href="../style.css" />
+  </head>
+  <body>
+    <header>
+      <nav aria-label="Main navigation">
+        <ul class="nav-list">
+          <li><a href="../index.html">Home</a></li>
+          <li><a href="../projects/">Projects</a></li>
+          <li><a href="index.html">Contact</a></li>
+          <li><a href="../cv/">CV</a></li>
+          <li><a href="https://github.com/dmittz" target="_blank" rel="noreferrer">GitHub</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main class="container content">
+      <section class="page-header">
+        <h1>Contact</h1>
+      </section>
+
+      <section>
+        <p>Send me a message using the form below. Replace the email address in the form action once you are ready to use it.</p>
+
+        <form action="mailto:dmittal@ucsd.edu" method="POST" enctype="text/plain">
+          <label>
+            Email
+            <input type="email" name="email" placeholder="you@example.com" />
+          </label>
+
+          <label>
+            Subject
+            <input type="text" name="subject" value="Hello" />
+          </label>
+
+          <label>
+            Message
+            <textarea name="body" placeholder="Write your message here..."></textarea>
+          </label>
+
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+  </body>
+</html>
