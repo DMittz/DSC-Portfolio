@@ -1,159 +1,52 @@
 body {
-    font: 100%/1.5 system-ui;
-    margin: 0;
-    color: #111111;
-    background: #ffffff;
+  font: 100%/1.5 Arial, sans-serif;
+  margin: 0;
+  padding: 1rem;
+  color: #111;
+  background: #fff;
+}
+
+main {
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 1.5rem 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem 1rem;
+}
+
+nav a {
+  color: #111;
+  text-decoration: none;
 }
 
 img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-}
-
-.container {
-    width: min(900px, calc(100% - 2rem));
-    margin: 0 auto;
-}
-
-header {
-    background: #f2f2f2;
-    border-bottom: 1px solid #cccccc;
-}
-
-nav {
-    width: min(900px, calc(100% - 2rem));
-    margin: 0 auto;
-    padding: 1rem 0;
-}
-
-.nav-list {
-    list-style: none;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem 1rem;
-    margin: 0;
-    padding: 0;
-}
-
-.nav-list a {
-    color: #111111;
-    text-decoration: none;
-    font-weight: 600;
-}
-
-.nav-list a:hover,
-.nav-list a:focus {
-    text-decoration: underline;
-}
-
-.hero {
-    display: grid;
-    grid-template-columns: 1.5fr 1fr;
-    gap: 2rem;
-    align-items: center;
-    padding: 2rem 0;
-}
-
-.eyebrow {
-    text-transform: uppercase;
-    letter-spacing: 0.08em;
-    font-size: 0.75rem;
-    color: #444444;
-    margin-bottom: 0.5rem;
-}
-
-h1,
-h2,
-h3 {
-    line-height: 1.2;
-    margin-top: 0;
-}
-
-.profile-figure {
-    margin: 0;
-    width: 100%;
-    max-width: 260px;
-    justify-self: center;
-}
-
-.profile-figure img {
-    width: 100%;
-    border: 1px solid #cccccc;
-}
-
-main section,
-main article {
-    padding: 0.5rem 0;
-}
-
-.page-header {
-    padding-top: 1.5rem;
-}
-
-.content {
-    padding-bottom: 2rem;
-}
-
-.project-list,
-.cv-list {
-    list-style: square;
-    padding-left: 1.25rem;
-    margin: 1rem 0 0;
-}
-
-.project-list li,
-.cv-list li {
-    margin-bottom: 0.5rem;
-}
-
-form {
-    display: grid;
-    gap: 0.75rem;
-    max-width: 600px;
+  max-width: 100%;
+  height: auto;
+  display: block;
 }
 
 label {
-    display: grid;
-    gap: 0.35rem;
-    font-weight: 600;
+  display: block;
+  margin-bottom: 0.75rem;
 }
 
-input,
-textarea,
-button {
-    font: inherit;
-}
-
-input,
-textarea {
-    width: 100%;
-    max-width: 100%;
-    padding: 0.6rem;
-    border: 1px solid #999999;
-    box-sizing: border-box;
+input, textarea, button {
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit;
+  padding: 0.5rem;
 }
 
 textarea {
-    min-height: 130px;
-    resize: vertical;
+  min-height: 120px;
 }
 
 button {
-    width: fit-content;
-    padding: 0.6rem 1rem;
-    border: 1px solid #111111;
-    background: #ffffff;
-    color: #111111;
-    cursor: pointer;
-}
-
-@media (max-width: 700px) {
-    .hero {
-        grid-template-columns: 1fr;
-    }
-
-    .nav-list {
-        gap: 0.5rem 0.75rem;
-    }
+  width: auto;
 }
