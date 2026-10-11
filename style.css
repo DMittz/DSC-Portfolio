@@ -27,7 +27,7 @@ main {
 /* auto-fill fits as many columns as possible; minmax keeps them at least 15em. */
 .projects {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(min(15em, 100%), 1fr));
   gap: 1em;
 
   /* CSS nesting scopes the card layout and heading styles to this grid. */
@@ -61,6 +61,7 @@ nav li {
 
 nav {
   display: flex;
+  flex-wrap: wrap;
   margin-bottom: 1em;
   border-bottom: 1px solid oklch(80% 3% 200);
 }
@@ -238,6 +239,13 @@ button {
 
   .cv .skills-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Reduce oversized headings only on exceptionally narrow screens. */
+@media (max-width: 20em) {
+  h1 {
+    font-size: 300%;
   }
 }
 
