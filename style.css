@@ -1,7 +1,7 @@
 body {
   font: 100%/1.5 Arial, sans-serif;
   /* Use max-width, not width, to cap content while allowing narrow screens. */
-  max-width: 100ch;
+  max-width: 70ch;
   margin-inline: auto;
   padding: 1rem;
   color: #111;
@@ -9,7 +9,7 @@ body {
 
   /* Alternative: auto is not numeric, so max() cannot compare it; 1em keeps a
      minimum gutter on narrow screens. This replaces the auto margin + padding.
-     margin-inline: max(1em, (100% - 100ch) / 2);
+    margin-inline: max(1em, (100% - 70ch) / 2);
   */
 }
 
