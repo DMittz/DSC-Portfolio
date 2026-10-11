@@ -12,7 +12,7 @@
         <ul class="nav-list">
           <li><a href="../index.html">Home</a></li>
           <li><a href="../projects/index.html">Projects</a></li>
-          <li><a href="index.html">Contact</a></li>
+          <li><a class="current" href="index.html">Contact</a></li>
           <li><a href="../cv/index.html">CV</a></li>
           <li><a href="https://github.com/dmittz" target="_blank" rel="noreferrer">GitHub</a></li>
         </ul>
@@ -28,19 +28,19 @@
         <p>Send me a message using the form below.</p>
 
         <form action="mailto:dmittal@ucsd.edu" method="POST" enctype="text/plain">
-          <label>
+          <label for="email">
             Email
-            <input type="email" name="email" placeholder="name@example.com" />
+            <input id="email" type="email" name="email" placeholder="name@example.com" />
           </label>
 
-          <label>
+          <label for="subject">
             Subject
-            <input type="text" name="subject" placeholder="Hello" />
+            <input id="subject" type="text" name="subject" placeholder="Hello" />
           </label>
 
-          <label>
+          <label for="body">
             Message
-            <textarea name="body" placeholder="Write your message here"></textarea>
+            <textarea id="body" name="body" placeholder="Write your message here"></textarea>
           </label>
 
           <button type="submit">Send</button>

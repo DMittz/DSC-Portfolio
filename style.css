@@ -1,9 +1,22 @@
 body {
   font: 100%/1.5 Arial, sans-serif;
-  margin: 0;
+  /* Use max-width, not width, to cap content while allowing narrow screens. */
+  max-width: 100ch;
+  margin-inline: auto;
   padding: 1rem;
   color: #111;
   background: #fff;
+
+  /* Alternative: auto is not numeric, so max() cannot compare it; 1em keeps a
+     minimum gutter on narrow screens. This replaces the auto margin + padding.
+     margin-inline: max(1em, (100% - 100ch) / 2);
+  */
+}
+
+/* Share the accent color with native controls and interactive navigation. */
+:root {
+  --color-accent: oklch(65% 50% 0);
+  accent-color: var(--color-accent);
 }
 
 main {
@@ -11,18 +24,38 @@ main {
   margin: 0 auto;
 }
 
-nav ul {
-  list-style: none;
-  padding: 0;
-  margin: 0 0 1.5rem 0;
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.75rem 1rem;
+/* Remove list boxes so their contents can participate directly in the nav. */
+nav ul,
+nav li {
+  display: contents;
 }
 
+nav {
+  display: flex;
+  margin-bottom: 1em;
+  border-bottom: 1px solid oklch(80% 3% 200);
+}
+
+/* Give every navigation link an equal share of the available space. */
 nav a {
-  color: #111;
   text-decoration: none;
+  color: inherit;
+  text-align: center;
+  padding: 0.5em;
+  flex: 1;
+}
+
+nav a.current {
+  border-bottom: 0.4em solid oklch(80% 3% 200);
+  /* Compensate for the thicker border so the link height stays unchanged. */
+  padding-bottom: calc(0.5em - 0.4em + 0.1em);
+}
+
+/* Highlight hovered links with the shared accent without shifting the nav. */
+nav a:hover {
+  border-bottom: 0.4em solid var(--color-accent);
+  padding-bottom: calc(0.5em - 0.4em + 0.1em);
+  background-color: oklch(from var(--color-accent) 95% 5% h);
 }
 
 img {
@@ -31,16 +64,29 @@ img {
   display: block;
 }
 
-label {
-  display: block;
-  margin-bottom: 0.75rem;
-}
-
+/* Browsers do not inherit the page font into form controls by default. */
 input, textarea, button {
-  width: 100%;
-  box-sizing: border-box;
   font: inherit;
   padding: 0.5rem;
+}
+
+/* auto fits the label column; 1fr gives controls the remaining form width. */
+form {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1em;
+}
+
+/* Subgrid shares form columns; 1 / -1 spans the full width of the form. */
+form label {
+  display: grid;
+  grid-template-columns: subgrid;
+  grid-column: 1 / -1;
+}
+
+/* 1 / -1 makes the submit button span the full form row. */
+form button {
+  grid-column: 1 / -1;
 }
 
 textarea {
