@@ -1,7 +1,7 @@
 body {
   font: 100%/1.5 Arial, sans-serif;
   /* Use max-width, not width, to cap content while allowing narrow screens. */
-  max-width: 50ch;
+  max-width: 70ch;
   margin-inline: auto;
   padding: 1rem;
   color: #111;
