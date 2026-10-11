@@ -24,6 +24,35 @@ main {
   margin: 0 auto;
 }
 
+/* auto-fill fits as many columns as possible; minmax keeps them at least 15em. */
+.projects {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(15em, 1fr));
+  gap: 1em;
+
+  /* CSS nesting scopes the card layout and heading styles to this grid. */
+  article {
+    display: grid;
+    grid-template-rows: subgrid;
+    /* Three children need three shared rows; wrapped headings then align images. */
+    grid-row: span 3;
+
+    h2 {
+      margin: 0;
+    }
+  }
+}
+
+/* The larger h1 establishes stronger hierarchy and contrast with card headings. */
+h1 {
+  font-size: 400%;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  line-height: 1.1;
+  text-wrap: balance;
+}
+
 /* Remove list boxes so their contents can participate directly in the nav. */
 nav ul,
 nav li {
@@ -95,4 +124,135 @@ textarea {
 
 button {
   width: auto;
+}
+
+/* Center the CV identity and distinguish the name from contact details. */
+.cv {
+  .cv-header {
+    text-align: center;
+    border-bottom: 1px solid var(--color-accent);
+
+    h1 {
+      font-size: 300%;
+    }
+
+    p {
+      font-size: 0.9em;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+
+    a:hover {
+      text-decoration-color: var(--color-accent);
+    }
+  }
+
+  /* Accent and separate CV sections while keeping heading lines compact. */
+  section > h2 {
+    font-variant: small-caps;
+    letter-spacing: 0.05em;
+    color: var(--color-accent);
+    border-bottom: 1px solid oklch(80% 3% 200);
+    margin-top: 1.5em;
+    line-height: 1.1;
+    text-wrap: balance;
+  }
+
+  /* Grid fixes metadata into left/right columns; Flexbox would not align those columns reliably. */
+  article {
+    display: grid;
+    grid-template-columns: 1fr auto;
+
+    .entry-title,
+    .entry-org {
+      grid-column: 1;
+    }
+
+    .entry-title {
+      font-weight: bold;
+    }
+
+    .entry-org {
+      font-style: italic;
+    }
+
+    .entry-date,
+    .entry-location {
+      grid-column: 2;
+      text-align: right;
+      color: color-mix(in oklch, currentColor 60%, transparent);
+    }
+
+    > ul {
+      grid-column: 1 / -1;
+    }
+  }
+
+  /* Tighten CV bullets and use the accent for their markers. */
+  .cv-list {
+    margin-block: 0.25em;
+    padding-inline-start: 1.25em;
+
+    li::marker {
+      color: var(--color-accent);
+    }
+  }
+
+  /* Align skill categories and their details in two shared columns. */
+  .skills-list {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    list-style: none;
+    padding-inline-start: 0;
+
+    li {
+      display: contents;
+    }
+
+    strong {
+      font-weight: bold;
+    }
+  }
+}
+
+/* Stack entry and skill metadata on narrow screens. */
+@media (max-width: 40em) {
+  .cv article {
+    grid-template-columns: 1fr;
+  }
+
+  .cv .entry-title,
+  .cv .entry-org,
+  .cv .entry-date,
+  .cv .entry-location {
+    grid-column: 1;
+  }
+
+  .cv .entry-date,
+  .cv .entry-location {
+    text-align: left;
+  }
+
+  .cv .skills-list {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Simplify printed CV output and keep entries together across page breaks. */
+@media print {
+  .cv {
+    font-size: 11pt;
+    background: none;
+  }
+
+  .cv nav {
+    display: none;
+  }
+
+  .cv article {
+    break-inside: avoid;
+  }
 }

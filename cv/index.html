@@ -6,7 +6,7 @@
     <title>CV | Dhruv Mittal</title>
     <link rel="stylesheet" href="../style.css" />
   </head>
-  <body>
+  <body class="cv">
     <header>
       <nav aria-label="Main navigation">
         <ul class="nav-list">
@@ -20,7 +20,7 @@
     </header>
 
     <main class="container content">
-      <header class="page-header">
+      <header class="cv-header page-header">
         <h1>Dhruv Mittal</h1>
         <p>dmittal@ucsd.edu | <a href="https://linkedin.com/in/dhruv-mittal/" target="_blank" rel="noreferrer">linkedin.com/in/dhruv-mittal/</a> | <a href="https://dmittz.github.io" target="_blank" rel="noreferrer">dmittz.github.io</a></p>
       </header>
@@ -28,12 +28,10 @@
       <section aria-labelledby="education">
         <h2 id="education">Education</h2>
         <article>
-          <header>
-            <h3>University of California, San Diego</h3>
-            <p>B.S. in Data Science, Minor in Finance</p>
-            <p>La Jolla, CA</p>
-            <p><time datetime="2024-09">September 2024</time> - <time datetime="2028-06">June 2028</time></p>
-          </header>
+          <h3 class="entry-title">University of California, San Diego</h3>
+          <p class="entry-org">B.S. in Data Science, Minor in Finance</p>
+          <p class="entry-location">La Jolla, CA</p>
+          <p class="entry-date"><time datetime="2024-09">September 2024</time> - <time datetime="2028-06">June 2028</time></p>
           <ul class="cv-list">
             <li>GPA: 3.8/4.0</li>
             <li>Provost Honors: Fall 2024, Spring 2025, Fall 2025, Spring 2026</li>
@@ -46,12 +44,10 @@
         <h2 id="experience">Experience</h2>
 
         <article>
-          <header>
-            <h3>Junior Business Systems Analyst</h3>
-            <p>UC San Diego – Integrated Procure-to-Pay Solutions (IPPS)</p>
-            <p><time datetime="2025-12">Dec 2025</time> – Present</p>
-            <p>La Jolla, CA</p>
-          </header>
+          <h3 class="entry-title">Junior Business Systems Analyst</h3>
+          <p class="entry-org">UC San Diego – Integrated Procure-to-Pay Solutions (IPPS)</p>
+          <p class="entry-date"><time datetime="2025-12">Dec 2025</time> – Present</p>
+          <p class="entry-location">La Jolla, CA</p>
           <ul class="cv-list">
             <li>Analyze procure-to-pay workflows across Oracle Financials, SAP Concur, PaymentWorks, and ServiceNow, identifying system gaps and resolving issues affecting campus financial operations.</li>
             <li>Perform root-cause analysis on production support requests by tracing workflow behavior, validating data across enterprise systems, and determining whether issues originate from configuration, process, or system defects.</li>
@@ -61,12 +57,10 @@
         </article>
 
         <article>
-          <header>
-            <h3>Software Engineer Intern</h3>
-            <p>Wise Work Technologies</p>
-            <p><time datetime="2025-06">Jun 2025</time> – <time datetime="2025-08">Aug 2025</time></p>
-            <p>Remote</p>
-          </header>
+          <h3 class="entry-title">Software Engineer Intern</h3>
+          <p class="entry-org">Wise Work Technologies</p>
+          <p class="entry-date"><time datetime="2025-06">Jun 2025</time> – <time datetime="2025-08">Aug 2025</time></p>
+          <p class="entry-location">Remote</p>
           <ul class="cv-list">
             <li>Built customer-facing functionality for an enterprise SaaS platform using C#/.NET and Python, incorporating direct client feedback into product and usability improvements.</li>
             <li>Integrated external APIs and automated JSON-based data processing workflows, improving application performance by approximately 15%.</li>
@@ -78,10 +72,8 @@
         <h2 id="projects">Projects</h2>
 
         <article>
-          <header>
-            <h3>HDSI Undergraduate Research Scholar – Homeless Systems Simulation</h3>
-            <p><time datetime="2026-09">Sep 2026</time> – Present</p>
-          </header>
+          <h3 class="entry-title">HDSI Undergraduate Research Scholar – Homeless Systems Simulation</h3>
+          <p class="entry-date"><time datetime="2026-09">Sep 2026</time> – Present</p>
           <ul class="cv-list">
             <li>Selected for the Halıcıoğlu Data Science Institute Undergraduate Scholarship to research Agent-Based Heterogeneity for the Homeless System Simulation, receiving a $2,250 research award for the 2026–27 academic year.</li>
             <li>Study heterogeneous agent behavior within homeless-system simulations to model how differences in individual characteristics and decisions affect system-level outcomes.</li>
@@ -89,11 +81,9 @@
         </article>
 
         <article>
-          <header>
-            <h3>TicketSync – Serverless Support Workflow Platform</h3>
-            <p>AWS, Terraform, Python</p>
-            <p><time datetime="2025-10">Oct 2025</time> – <time datetime="2025-12">Dec 2025</time></p>
-          </header>
+          <h3 class="entry-title">TicketSync – Serverless Support Workflow Platform</h3>
+          <p class="entry-org">AWS, Terraform, Python</p>
+          <p class="entry-date"><time datetime="2025-10">Oct 2025</time> – <time datetime="2025-12">Dec 2025</time></p>
           <ul class="cv-list">
             <li>Led a 4-person team to build a serverless ticket-management platform using AWS Lambda, S3, DynamoDB, and Terraform, connecting frontend, backend, and data-processing components through JSON-based APIs.</li>
             <li>Automated ticket prioritization and email workflows using Amazon Comprehend, EventBridge, and SES, cutting down manual ticket-response effort by an estimated 50%.</li>
@@ -103,7 +93,7 @@
 
       <section aria-labelledby="technical-skills">
         <h2 id="technical-skills">Technical Skills</h2>
-        <ul class="cv-list">
+        <ul class="cv-list skills-list">
           <li><strong>Data &amp; Analytics:</strong> Python, SQL, Excel, Pandas, Tableau, Power BI, Jupyter</li>
           <li><strong>Enterprise Systems:</strong> Oracle Financials, SAP Concur, ServiceNow, PaymentWorks, SharePoint</li>
           <li><strong>Cloud &amp; Automation:</strong> AWS (Lambda, S3, DynamoDB, EventBridge, SES), Terraform, Azure (AZ-900 Certified)</li>
