@@ -4,8 +4,8 @@ body {
   max-width: 70ch;
   margin-inline: auto;
   padding: 1rem;
-  color: #111;
-  background: #fff;
+  color: canvastext;
+  background: canvas;
 
   /* Alternative: auto is not numeric, so max() cannot compare it; 1em keeps a
      minimum gutter on narrow screens. This replaces the auto margin + padding.
@@ -15,6 +15,8 @@ body {
 
 /* Share the accent color with native controls and interactive navigation. */
 :root {
+  /* Follow the OS color scheme; canvas and canvastext adapt automatically. */
+  color-scheme: light dark;
   --color-accent: oklch(65% 50% 0);
   accent-color: var(--color-accent);
 }
@@ -60,10 +62,12 @@ nav li {
 }
 
 nav {
+  --border-color: oklch(50% 10% 200 / 40%);
   display: flex;
   flex-wrap: wrap;
   margin-bottom: 1em;
-  border-bottom: 1px solid oklch(80% 3% 200);
+  /* The old fixed 80% lightness looked harsh against dark-mode backgrounds. */
+  border-bottom: 1px solid var(--border-color);
 }
 
 /* Give every navigation link an equal share of the available space. */
@@ -76,7 +80,7 @@ nav a {
 }
 
 nav a.current {
-  border-bottom: 0.4em solid oklch(80% 3% 200);
+  border-bottom: 0.4em solid var(--border-color);
   /* Compensate for the thicker border so the link height stays unchanged. */
   padding-bottom: calc(0.5em - 0.4em + 0.1em);
 }
@@ -85,7 +89,8 @@ nav a.current {
 nav a:hover {
   border-bottom: 0.4em solid var(--color-accent);
   padding-bottom: calc(0.5em - 0.4em + 0.1em);
-  background-color: oklch(from var(--color-accent) 95% 5% h);
+  /* Mixing with canvas keeps the hover tint appropriate in either color scheme. */
+  background-color: color-mix(in oklch, var(--color-accent), canvas 85%);
 }
 
 img {
@@ -95,7 +100,7 @@ img {
 }
 
 /* Browsers do not inherit the page font into form controls by default. */
-input, textarea, button {
+input, textarea, button, select {
   font: inherit;
   padding: 0.5rem;
 }
@@ -156,7 +161,7 @@ button {
     font-variant: small-caps;
     letter-spacing: 0.05em;
     color: var(--color-accent);
-    border-bottom: 1px solid oklch(80% 3% 200);
+    border-bottom: 1px solid color-mix(in oklch, currentColor 20%, transparent);
     margin-top: 1.5em;
     line-height: 1.1;
     text-wrap: balance;
@@ -217,6 +222,14 @@ button {
       font-weight: bold;
     }
   }
+}
+
+/* Absolute positioning removes the switch from normal flow; top/right offset it from the page edges. */
+.color-scheme {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-size: 80%;
 }
 
 /* Stack entry and skill metadata on narrow screens. */

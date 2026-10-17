@@ -43,3 +43,37 @@ for (let p of pages) {
     a.target = "_blank";
   }
 }
+
+// Insert the theme selector at the start of the page.
+document.body.insertAdjacentHTML(
+  "afterbegin",
+  `
+      <label class="color-scheme">
+        Theme:
+        <select>
+          <option value="light dark">Automatic</option>
+          <option value="light">Light</option>
+          <option value="dark">Dark</option>
+        </select>
+      </label>`,
+);
+
+// Get the theme selector and provide a shared way to set the page color scheme.
+let select = document.querySelector(".color-scheme select");
+
+function setColorScheme(colorScheme) {
+  document.documentElement.style.setProperty("color-scheme", colorScheme);
+}
+
+// Apply and persist the selected theme whenever the selector changes.
+select.addEventListener("input", (event) => {
+  console.log("color scheme changed to", event.target.value);
+  setColorScheme(event.target.value);
+  localStorage.colorScheme = event.target.value;
+});
+
+// Restore the saved theme and keep the selector in sync.
+if ("colorScheme" in localStorage) {
+  setColorScheme(localStorage.colorScheme);
+  select.value = localStorage.colorScheme;
+}
