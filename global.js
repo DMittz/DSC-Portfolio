@@ -77,3 +77,51 @@ if ("colorScheme" in localStorage) {
   setColorScheme(localStorage.colorScheme);
   select.value = localStorage.colorScheme;
 }
+
+// Fetch JSON data and report network or parsing errors.
+export async function fetchJSON(url) {
+  try {
+    const response = await fetch(url);
+    // Check response.ok because fetch does not reject for HTTP error status codes.
+    if (!response.ok) {
+      throw new Error(`Failed to fetch projects: ${response.statusText}`);
+    }
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    console.error("Error fetching or parsing JSON data:", error);
+  }
+}
+
+// Render projects into a container while preserving the three-child subgrid structure.
+export function renderProjects(projects, containerElement, headingLevel = "h2") {
+  if (!(containerElement instanceof Element)) {
+    console.error("Invalid container element for rendering projects.");
+    return;
+  }
+
+  // Clear existing content before rendering so repeated calls do not duplicate projects.
+  containerElement.innerHTML = "";
+
+  if (!/^h[1-6]$/.test(headingLevel)) {
+    headingLevel = "h2";
+  }
+
+  if (!Array.isArray(projects) || projects.length === 0) {
+    const placeholder = document.createElement("p");
+    placeholder.textContent = "No projects to show yet.";
+    containerElement.append(placeholder);
+    return;
+  }
+
+  for (let project of projects) {
+    // Create each article as a DOM element so it can be appended as a grid item.
+    let article = document.createElement("article");
+    article.innerHTML = `
+      <${headingLevel}>${project.title}</${headingLevel}>
+      <img src="${project.image || "https://vis-society.github.io/labs/2/images/empty.svg"}" alt="${project.title}">
+      <p>${project.description}</p>
+    `;
+    containerElement.append(article);
+  }
+}
