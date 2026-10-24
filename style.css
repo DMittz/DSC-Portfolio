@@ -45,6 +45,27 @@ main {
   }
 }
 
+/* Arrange GitHub profile labels and values in shared rows. */
+#profile-stats dl {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  text-align: center;
+}
+
+/* Pin labels and values so all labels share row 1 and all values share row 2. */
+#profile-stats dt {
+  grid-row: 1;
+  font-size: 80%;
+  color: color-mix(in oklch, currentColor 60%, transparent);
+}
+
+#profile-stats dd {
+  grid-row: 2;
+  margin: 0;
+  font-size: 200%;
+  color: var(--color-accent);
+}
+
 /* The larger h1 establishes stronger hierarchy and contrast with card headings. */
 h1 {
   font-size: 400%;
@@ -234,6 +255,16 @@ button {
 
 /* Stack entry and skill metadata on narrow screens. */
 @media (max-width: 40em) {
+  #profile-stats dl {
+    grid-template-columns: repeat(2, 1fr);
+    grid-auto-flow: row;
+  }
+
+  #profile-stats dt,
+  #profile-stats dd {
+    grid-row: auto;
+  }
+
   .cv article {
     grid-template-columns: 1fr;
   }

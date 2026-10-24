@@ -1,62 +1,92 @@
 [
   {
+    "title": "This Portfolio Website",
+    "year": "2026",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Built with HTML, CSS, and JavaScript, this portfolio includes a JavaScript-generated navigation, dark mode, and projects loaded from JSON."
+  },
+  {
+    "title": "HDSI Undergraduate Research Scholar: Homeless Systems Simulation",
+    "year": "2026",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Conducting agent-based heterogeneity research on how differences in individual characteristics and decisions affect system-level outcomes in homeless-system simulations."
+  },
+  {
+    "title": "TicketSync: Serverless Support Workflow Platform",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "A four-person team project using AWS Lambda, S3, DynamoDB, Terraform, and Python. It includes automated ticket prioritization and email workflows."
+  },
+  {
+    "title": "IPPS Procure-to-Pay Workflow Analysis and Test Automation",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Analyzing workflows across Oracle Financials, SAP Concur, PaymentWorks, and ServiceNow. Automating validation and data-import tasks for releases."
+  },
+  {
+    "title": "Enterprise SaaS Platform Features at Wise Work Technologies",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Developing customer-facing features with C#/.NET and Python. The work includes external API integrations and JSON-based data processing."
+  },
+  {
+    "title": "DSC 106 Project 1",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future DSC 106 project. Project details will be added later."
+  },
+  {
+    "title": "Machine Learning Optimization Project",
+    "year": "2025",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future machine learning optimization project. Project details will be added later."
+  },
+  {
+    "title": "Financial Forecasting Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future financial forecasting project. Project details will be added later."
+  },
+  {
+    "title": "Data Structures & Algorithms Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future data structures and algorithms project. Project details will be added later."
+  },
+  {
+    "title": "Data Visualization Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future data visualization project. Project details will be added later."
+  },
+  {
+    "title": "Database Design Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future database design project. Project details will be added later."
+  },
+  {
+    "title": "Business Process Improvement Project",
+    "year": "2024",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future business process improvement project. Project details will be added later."
+  },
+  {
     "title": "Lorem Ipsum Dolor Sit",
+    "year": "2024",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
     "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus vitae lectus at arcu."
   },
   {
     "title": "Consectetur Adipiscing Elit",
+    "year": "2024",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
     "description": "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Integer feugiat."
   },
   {
     "title": "Sed Do Eiusmod Tempor",
+    "year": "2024",
     "image": "https://vis-society.github.io/labs/2/images/empty.svg",
     "description": "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip."
-  },
-  {
-    "title": "Incididunt Ut Labore Et Dolore",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Duis aute irure dolor in reprehenderit, voluptate velit esse cillum dolore eu fugiat."
-  },
-  {
-    "title": "Magna Aliqua Ut Enim",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt."
-  },
-  {
-    "title": "Minim Veniam Quis Nostrud",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Mollit anim id est laborum. Curabitur blandit tempus porttitor."
-  },
-  {
-    "title": "Exercitation Ullamco Laboris Nisi",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Maecenas faucibus mollis interdum, donec ullamcorper nulla non metus auctor."
-  },
-  {
-    "title": "Aliquip Ex Ea Commodo Consequat",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Praesent commodo cursus magna, vel scelerisque nisl consectetur et."
-  },
-  {
-    "title": "Duis Aute Irure Dolor",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Vestibulum id ligula porta felis euismod semper. Aenean lacinia bibendum nulla."
-  },
-  {
-    "title": "In Reprehenderit Voluptate Velit",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Nullam quis risus eget urna mollis ornare vel eu leo. Donec sed odio dui."
-  },
-  {
-    "title": "Esse Cillum Dolore Fugiat",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Donec id elit non mi porta gravida at eget metus. Cras mattis consectetur purus."
-  },
-  {
-    "title": "Nulla Pariatur Excepteur Sint",
-    "image": "https://vis-society.github.io/labs/2/images/empty.svg",
-    "description": "Integer posuere erat a ante venenatis dapibus posuere velit aliquet. Sed posuere."
   }
 ]
