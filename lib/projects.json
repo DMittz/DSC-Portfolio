@@ -12,16 +12,28 @@
     "description": "Conducting agent-based heterogeneity research on how differences in individual characteristics and decisions affect system-level outcomes in homeless-system simulations."
   },
   {
+    "title": "IPPS Procure-to-Pay Workflow Analysis and Test Automation",
+    "year": "2026",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Analyzing workflows across Oracle Financials, SAP Concur, PaymentWorks, and ServiceNow. Automating validation and data-import tasks for releases."
+  },
+  {
+    "title": "DSC 106 Final Showcase",
+    "year": "2026",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future DSC 106 project. Project details will be added later."
+  },
+  {
+    "title": "Data Visualization Project",
+    "year": "2026",
+    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
+    "description": "Placeholder for a future data visualization project. Project details will be added later."
+  },
+  {
     "title": "TicketSync: Serverless Support Workflow Platform",
     "year": "2025",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "A four-person team project using AWS Lambda, S3, DynamoDB, Terraform, and Python. It includes automated ticket prioritization and email workflows."
-  },
-  {
-    "title": "IPPS Procure-to-Pay Workflow Analysis and Test Automation",
-    "year": "2025",
-    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Analyzing workflows across Oracle Financials, SAP Concur, PaymentWorks, and ServiceNow. Automating validation and data-import tasks for releases."
   },
   {
     "title": "Enterprise SaaS Platform Features at Wise Work Technologies",
@@ -30,34 +42,22 @@
     "description": "Developing customer-facing features with C#/.NET and Python. The work includes external API integrations and JSON-based data processing."
   },
   {
-    "title": "DSC 106 Project 1",
-    "year": "2025",
-    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Placeholder for a future DSC 106 project. Project details will be added later."
-  },
-  {
     "title": "Machine Learning Optimization Project",
     "year": "2025",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "Placeholder for a future machine learning optimization project. Project details will be added later."
   },
   {
-    "title": "Financial Forecasting Project",
-    "year": "2024",
-    "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Placeholder for a future financial forecasting project. Project details will be added later."
-  },
-  {
     "title": "Data Structures & Algorithms Project",
-    "year": "2024",
+    "year": "2025",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
     "description": "Placeholder for a future data structures and algorithms project. Project details will be added later."
   },
   {
-    "title": "Data Visualization Project",
+    "title": "Financial Forecasting Project",
     "year": "2024",
     "image": "https://dsc106.com/labs/lab02/images/empty.svg",
-    "description": "Placeholder for a future data visualization project. Project details will be added later."
+    "description": "Placeholder for a future financial forecasting project. Project details will be added later."
   },
   {
     "title": "Database Design Project",
