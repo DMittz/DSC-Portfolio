@@ -49,6 +49,18 @@ main {
 #projects-pie-plot {
   max-width: 20em;
   overflow: visible;
+
+  /* The SVG box can be hovered without being over a wedge; :has targets wedge hover specifically. */
+  &:has(path:hover) {
+    path:not(:hover) {
+      opacity: 0.5;
+    }
+  }
+
+  path {
+    transition: 300ms;
+    cursor: pointer;
+  }
 }
 
 /* Render each color key as a compact circle using its legend item's custom color. */
@@ -77,6 +89,17 @@ main {
   display: flex;
   align-items: center;
   gap: 0.5em;
+  cursor: pointer;
+}
+
+/* Override the legend's inline --color only for the selected year and apply it to its slice. */
+.selected {
+  /* !important is needed because --color is set in an inline style attribute, which beats selectors. */
+  --color: oklch(60% 45% 0) !important;
+
+  &:is(path) {
+    fill: var(--color);
+  }
 }
 
 /* Align the pie and legend side by side without changing the main page container. */

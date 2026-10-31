@@ -13,6 +13,10 @@ if (projectsTitle && Array.isArray(projects)) {
   projectsTitle.textContent = `${projects.length} Projects`;
 }
 
+// Keep search and year selection independent so every interaction can be combined.
+let query = "";
+let selectedYear = null;
+
 // Rebuild the pie chart and legend from the projects currently visible.
 function renderPieChart(projectsGiven) {
   d3.select("#projects-pie-plot").selectAll("path").remove();
@@ -46,11 +50,17 @@ function renderPieChart(projectsGiven) {
     .domain(years.map((year, idx) => idx));
 
   // Draw each slice using the color index assigned to its year in the full project list.
-  arcs.forEach((arc, idx) => {
+  arcData.forEach((arcDatum, idx) => {
+    let year = arcDatum.data.label;
     d3.select("#projects-pie-plot")
       .append("path")
-      .attr("d", arc)
-      .attr("fill", colors(years.indexOf(data[idx].label)));
+      .attr("d", arcs[idx])
+      .attr("fill", colors(years.indexOf(year)))
+      .classed("selected", year === selectedYear)
+      .on("click", () => {
+        selectedYear = selectedYear === year ? null : year;
+        update();
+      });
   });
 
   // The --color custom property gives each swatch the same color as its pie slice.
@@ -60,31 +70,49 @@ function renderPieChart(projectsGiven) {
       .append("li")
       .attr("style", `--color:${colors(years.indexOf(d.label))}`)
       .attr("class", "legend-item")
-      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`);
+      .classed("selected", d.label === selectedYear)
+      .html(`<span class="swatch"></span> ${d.label} <em>(${d.value})</em>`)
+      .on("click", () => {
+        selectedYear = selectedYear === d.label ? null : d.label;
+        update();
+      });
   });
 }
 
-// Draw the full chart on page load so it is visible before the first search.
-if (Array.isArray(projects)) {
-  renderPieChart(projects);
+// Combine both filters so a slice click cannot discard an active search condition.
+function getVisibleProjects() {
+  return projects.filter((project) => {
+    let matchesQuery = Object.values(project)
+      .join("\n").toLowerCase()
+      .includes(query.toLowerCase());
+    let matchesYear = selectedYear === null || project.year === selectedYear;
+    return matchesQuery && matchesYear;
+  });
 }
 
-// Store the current query and return projects matching any field case-insensitively.
-let query = "";
-let searchInput = document.querySelector(".searchBar");
-function setQuery(newQuery) {
-  query = newQuery;
-  return projects.filter((project) => {
+// Redraw the pie from search matches alone, and render cards using both active filters.
+function update() {
+  let searchFiltered = projects.filter((project) => {
     let values = Object.values(project).join("\n").toLowerCase();
     return values.includes(query.toLowerCase());
   });
+  if (!searchFiltered.some((project) => project.year === selectedYear)) {
+    selectedYear = null;
+  }
+  renderPieChart(searchFiltered);
+  renderProjects(getVisibleProjects(), projectsContainer, "h2");
 }
 
-// Update the cards and chart as the user types, while retaining the total page count.
+// Update the query and refresh both views as the user types.
+let searchInput = document.querySelector(".searchBar");
 if (searchInput && Array.isArray(projects)) {
   searchInput.addEventListener("input", (event) => {
-    let filteredProjects = setQuery(event.target.value);
-    renderProjects(filteredProjects, projectsContainer, "h2");
-    renderPieChart(filteredProjects);
+    query = event.target.value;
+    update();
   });
+}
+
+// Render the full chart and card list on load before any interaction occurs.
+if (Array.isArray(projects)) {
+  update();
 }
