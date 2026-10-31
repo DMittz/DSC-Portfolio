@@ -117,10 +117,14 @@ export function renderProjects(projects, containerElement, headingLevel = "h2") 
   for (let project of projects) {
     // Create each article as a DOM element so it can be appended as a grid item.
     let article = document.createElement("article");
+    // Keep the description and year in one grid cell so they do not split into separate subgrid rows.
     article.innerHTML = `
       <${headingLevel}>${project.title}</${headingLevel}>
       <img src="${project.image || "https://vis-society.github.io/labs/2/images/empty.svg"}" alt="${project.title}">
-      <p>${project.description}</p>
+      <div>
+        <p>${project.description}</p>
+        ${project.year !== undefined && project.year !== null ? `<p class="project-year">${project.year}</p>` : ""}
+      </div>
     `;
     containerElement.append(article);
   }

@@ -45,6 +45,19 @@ main {
   }
 }
 
+#projects-pie-plot {
+  max-width: 20em;
+  margin-block: 2em;
+  overflow: visible;
+}
+
+.project-year {
+  color: color-mix(in oklch, currentColor 60%, transparent);
+  font-family: Baskerville, serif;
+  font-variant-numeric: oldstyle-nums;
+  margin: 0;
+}
+
 /* Arrange GitHub profile labels and values in shared rows. */
 #profile-stats dl {
   display: grid;
