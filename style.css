@@ -255,6 +255,27 @@ dl.info[hidden]:not(:hover, :focus-within) {
   transform: scale(1.5);
 }
 
+/* Highlight commits contained in the active brush selection. */
+#chart circle.selected {
+  fill: #ff6b6b;
+}
+
+/* Animate the brush boundary so the selected region is easy to distinguish. */
+@keyframes marching-ants {
+  to {
+    stroke-dashoffset: -8;
+  }
+}
+
+/* Keep the selection overlay subtle and visible in either color scheme. */
+#chart .selection {
+  fill-opacity: 0.1;
+  stroke: currentColor;
+  stroke-opacity: 0.7;
+  stroke-dasharray: 5 3;
+  animation: marching-ants 2s linear infinite;
+}
+
 /* The larger h1 establishes stronger hierarchy and contrast with card headings. */
 h1 {
   font-size: 400%;
