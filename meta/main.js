@@ -1,6 +1,24 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
 
 let xScale, yScale;
+let commitProgress = 100;
+let timeScale;
+let commitMaxTime;
+let filteredCommits;
+
+// Share chart geometry and the radius range between initial rendering and updates.
+const width = 1000;
+const height = 600;
+const margin = { top: 10, right: 10, bottom: 30, left: 40 };
+const usableArea = {
+  top: margin.top,
+  right: width - margin.right,
+  bottom: height - margin.bottom,
+  left: margin.left,
+  width: width - margin.left - margin.right,
+  height: height - margin.top - margin.bottom,
+};
+const radiusRange = [2, 30];
 
 // Load the code-location data and convert numeric and date columns.
 async function loadData() {
@@ -100,7 +118,7 @@ function renderCommitInfo(data, commits) {
 function renderTooltipContent(commit) {
   const link = document.getElementById("commit-link");
   const date = document.getElementById("commit-date");
-  const time = document.getElementById("commit-time");
+  const time = document.getElementById("commit-tooltip-time");
   const author = document.getElementById("commit-author");
   const lines = document.getElementById("commit-lines");
 
@@ -193,24 +211,11 @@ function createBrushSelector(svg) {
 
 // Plot each commit by its timestamp and time of day.
 function renderScatterPlot(data, commits) {
-  const width = 1000;
-  const height = 600;
   const svg = d3
     .select("#chart")
     .append("svg")
     .attr("viewBox", `0 0 ${width} ${height}`)
     .style("overflow", "visible");
-
-  // Leave 40px on the left so the "00:00" y-axis labels are not clipped.
-  const margin = { top: 10, right: 10, bottom: 30, left: 40 };
-  const usableArea = {
-    top: margin.top,
-    right: width - margin.right,
-    bottom: height - margin.bottom,
-    left: margin.left,
-    width: width - margin.left - margin.right,
-    height: height - margin.top - margin.bottom,
-  };
 
   xScale = d3
     .scaleTime()
@@ -238,10 +243,12 @@ function renderScatterPlot(data, commits) {
     .tickFormat((d) => String(d % 24).padStart(2, "0") + ":00");
   svg
     .append("g")
+    .attr("class", "x-axis")
     .attr("transform", `translate(0, ${usableArea.bottom})`)
     .call(xAxis);
   svg
     .append("g")
+    .attr("class", "y-axis")
     .attr("transform", `translate(${usableArea.left}, 0)`)
     .call(yAxis);
 
@@ -250,12 +257,13 @@ function renderScatterPlot(data, commits) {
   // Draw larger dots first so smaller commits remain visible on top.
   const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
   // Circle area grows with the square of radius, so a square-root scale makes area proportional to lines edited.
-  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range([2, 30]);
+  const rScale = d3.scaleSqrt().domain([minLines, maxLines]).range(radiusRange);
   const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
   const dots = svg.append("g").attr("class", "dots");
   dots
     .selectAll("circle")
-    .data(sortedCommits)
+    // Keys let D3 reuse each commit's circle so it moves smoothly instead of jumping.
+    .data(sortedCommits, (d) => d.id)
     .join("circle")
     .attr("cx", (d) => xScale(d.datetime))
     .attr("cy", (d) => yScale(d.hourFrac))
@@ -277,7 +285,86 @@ function renderScatterPlot(data, commits) {
   createBrushSelector(svg);
 }
 
+// Update the existing plot so slider input never creates another SVG.
+function updateScatterPlot(data, commits) {
+  const svg = d3.select("#chart").select("svg");
+  const dots = svg.select("g.dots");
+  if (commits.length === 0) {
+    dots.selectAll("*").remove();
+    return;
+  }
+
+  xScale.domain(d3.extent(commits, (d) => d.datetime));
+  const [minLines, maxLines] = d3.extent(commits, (d) => d.totalLines);
+  const rScale = d3
+    .scaleSqrt()
+    .domain([minLines, maxLines])
+    .range(radiusRange);
+
+  // Redraw the horizontal axis against the new commit time domain.
+  const xAxisGroup = svg.select("g.x-axis");
+  xAxisGroup.selectAll("*").remove();
+  xAxisGroup.call(d3.axisBottom(xScale));
+
+  // Keep the largest circles behind smaller commits and preserve their identities.
+  const sortedCommits = d3.sort(commits, (d) => -d.totalLines);
+  dots
+    .selectAll("circle")
+    // Keys let D3 reuse each commit's circle so it moves smoothly instead of jumping.
+    .data(sortedCommits, (d) => d.id)
+    .join("circle")
+    .attr("cx", (d) => xScale(d.datetime))
+    .attr("cy", (d) => yScale(d.hourFrac))
+    .attr("r", (d) => rScale(d.totalLines))
+    .attr("fill", "steelblue")
+    .style("fill-opacity", 0.7)
+    .on("mouseenter", (event, commit) => {
+      d3.select(event.currentTarget).style("fill-opacity", 1);
+      renderTooltipContent(commit);
+      updateTooltipVisibility(true);
+      updateTooltipPosition(event);
+    })
+    .on("mouseleave", (event) => {
+      d3.select(event.currentTarget).style("fill-opacity", 0.7);
+      updateTooltipVisibility(false);
+    });
+
+  // The brush overlay can intercept pointer events unless the dots stay above it.
+  svg.selectAll(".dots, .overlay ~ *").raise();
+}
+
+// Convert the slider percentage into a date cutoff and refresh the existing plot.
+function onTimeSliderChange() {
+  const slider = document.getElementById("commit-progress");
+  commitProgress = Number(slider.value);
+  commitMaxTime = timeScale.invert(commitProgress);
+  document.getElementById("commit-time").textContent =
+    commitMaxTime.toLocaleString("en", {
+      dateStyle: "long",
+      timeStyle: "short",
+    });
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
+  // Calling renderScatterPlot here would append another SVG for every slider input.
+  updateScatterPlot(data, filteredCommits);
+}
+
 let data = await loadData();
 let commits = processCommits(data);
+// Map slider percentages onto the available commit timestamps.
+timeScale = d3
+  .scaleTime()
+  .domain([
+    d3.min(commits, (d) => d.datetime),
+    d3.max(commits, (d) => d.datetime),
+  ])
+  .range([0, 100]);
+filteredCommits = commits;
+
+// Create the statistics and chart before attaching the handler that updates the chart.
 renderCommitInfo(data, commits);
 renderScatterPlot(data, commits);
+document
+  .getElementById("commit-progress")
+  .addEventListener("input", onTimeSliderChange);
+// Initialize the displayed cutoff and filtered view to match the slider's default value.
+onTimeSliderChange();

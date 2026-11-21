@@ -175,6 +175,28 @@ main {
   color: var(--color-accent);
 }
 
+/* Keep the time cutoff and slider aligned while allowing the slider to fill the row. */
+.filter-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1em;
+}
+
+.filter-row label {
+  flex: 1;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5em;
+}
+
+.filter-row input[type="range"] {
+  flex: 1;
+}
+
+.filter-row time {
+  margin-left: auto;
+}
+
 /* Scale the viewBox chart with its container while preserving its aspect ratio. */
 #chart svg {
   display: block;
@@ -245,9 +267,14 @@ dl.info[hidden]:not(:hover, :focus-within) {
 
 /* Animate chart dots and use their centers as the scale origin, not their top-left corners. */
 #chart circle {
-  transition: 200ms;
+  transition: all 200ms;
   transform-origin: center;
   transform-box: fill-box;
+
+  /* New circles have no start state, so provide one for their entry transition. */
+  @starting-style {
+    r: 0;
+  }
 }
 
 /* Enlarge only the hovered dots in the commits chart, not other site charts. */

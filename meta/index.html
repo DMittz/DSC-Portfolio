@@ -12,6 +12,14 @@
     <main class="container content">
       <h1>Meta</h1>
       <p>This page analyzes the code in this website's repository.</p>
+      <!-- Keep the cutoff control and its current date together above the summary. -->
+      <div class="filter-row">
+        <label>
+          Show commits until:
+          <input type="range" id="commit-progress" min="0" max="100" value="100">
+        </label>
+        <time id="commit-time"></time>
+      </div>
       <div id="stats"></div>
       <h2>Commits by time of day</h2>
       <div id="chart"></div>
@@ -23,7 +31,7 @@
         <dd id="commit-date"></dd>
 
         <dt>Time</dt>
-        <dd id="commit-time"></dd>
+        <dd id="commit-tooltip-time"></dd>
 
         <dt>Author</dt>
         <dd id="commit-author"></dd>
