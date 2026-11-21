@@ -16,31 +16,39 @@
       <div class="filter-row">
         <label>
           Show commits until:
-          <input type="range" id="commit-progress" min="0" max="100" value="100">
+          <input type="range" id="commit-progress" min="0" max="100" step="any" value="100">
         </label>
         <time id="commit-time"></time>
       </div>
       <div id="stats"></div>
-      <h2>Commits by time of day</h2>
-      <div id="chart"></div>
-      <dl id="commit-tooltip" class="info tooltip" hidden>
-        <dt>Commit</dt>
-        <dd><a href="" id="commit-link" target="_blank"></a></dd>
+      <!-- Pair commit-by-commit story text with the sticky scatterplot. -->
+      <div id="scrolly-1">
+        <div id="scatter-story"></div>
+        <div id="scatter-plot">
+          <h2>Commits by time of day</h2>
+          <div id="chart"></div>
+          <dl id="commit-tooltip" class="info tooltip" hidden>
+            <dt>Commit</dt>
+            <dd><a href="" id="commit-link" target="_blank" rel="noopener noreferrer"></a></dd>
 
-        <dt>Date</dt>
-        <dd id="commit-date"></dd>
+            <dt>Date</dt>
+            <dd id="commit-date"></dd>
 
-        <dt>Time</dt>
-        <dd id="commit-tooltip-time"></dd>
+            <dt>Time</dt>
+            <dd id="commit-tooltip-time"></dd>
 
-        <dt>Author</dt>
-        <dd id="commit-author"></dd>
+            <dt>Author</dt>
+            <dd id="commit-author"></dd>
 
-        <dt>Lines edited</dt>
-        <dd id="commit-lines"></dd>
-      </dl>
-      <p id="selection-count">No commits selected</p>
-      <dl id="language-breakdown" class="stats"></dl>
+            <dt>Lines edited</dt>
+            <dd id="commit-lines"></dd>
+          </dl>
+          <p id="selection-count">No commits selected</p>
+          <dl id="language-breakdown" class="stats"></dl>
+        </div>
+      </div>
+      <!-- Each file row contains its source-line units; the slider and story update it. -->
+      <dl id="files"></dl>
     </main>
   </body>
 </html>

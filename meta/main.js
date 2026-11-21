@@ -1,10 +1,13 @@
 import * as d3 from "https://cdn.jsdelivr.net/npm/d3@7.9.0/+esm";
+import scrollama from "https://cdn.jsdelivr.net/npm/scrollama@3.2.0/+esm";
 
 let xScale, yScale;
 let commitProgress = 100;
 let timeScale;
 let commitMaxTime;
 let filteredCommits;
+let brushSelection = null;
+const colors = d3.scaleOrdinal(d3.schemeTableau10);
 
 // Share chart geometry and the radius range between initial rendering and updates.
 const width = 1000;
@@ -35,30 +38,34 @@ async function loadData() {
 
 // Group source lines by commit and summarize each commit.
 function processCommits(data) {
-  return d3.groups(data, (d) => d.commit).map(([commit, lines]) => {
-    const { author, date, time, timezone, datetime } = lines[0];
-    const result = {
-      id: commit,
-      url: "https://github.com/dmittz/DSC-Portfolio/commit/" + commit,
-      author,
-      date,
-      time,
-      timezone,
-      datetime,
-      hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
-      totalLines: lines.length,
-    };
+  return d3
+    .groups(data, (d) => d.commit)
+    .map(([commit, lines]) => {
+      const { author, date, time, timezone, datetime } = lines[0];
+      const result = {
+        id: commit,
+        url: "https://github.com/dmittz/DSC-Portfolio/commit/" + commit,
+        author,
+        date,
+        time,
+        timezone,
+        datetime,
+        hourFrac: datetime.getHours() + datetime.getMinutes() / 60,
+        totalLines: lines.length,
+      };
 
-    // Non-enumerable keeps the original rows accessible without cluttering listings.
-    Object.defineProperty(result, "lines", {
-      value: lines,
-      enumerable: false,
-      configurable: true,
-      writable: true,
-    });
+      // Non-enumerable keeps the original rows accessible without cluttering listings.
+      Object.defineProperty(result, "lines", {
+        value: lines,
+        enumerable: false,
+        configurable: true,
+        writable: true,
+      });
 
-    return result;
-  });
+      return result;
+    })
+    // Chronological order keeps the scrollytelling steps aligned with time.
+    .sort((a, b) => a.datetime - b.datetime);
 }
 
 // Render repository-wide summary statistics.
@@ -161,6 +168,7 @@ function isCommitSelected(selection, commit) {
 // Update selected dots and refresh both summaries when the brush changes.
 function brushed(event) {
   const selection = event.selection;
+  brushSelection = selection;
   d3.selectAll("#chart circle").classed("selected", (d) =>
     isCommitSelected(selection, d),
   );
@@ -171,7 +179,7 @@ function brushed(event) {
 // Show how many commits fall within the current brush selection.
 function renderSelectionCount(selection) {
   const selectedCommits = selection
-    ? commits.filter((d) => isCommitSelected(selection, d))
+    ? filteredCommits.filter((d) => isCommitSelected(selection, d))
     : [];
   const countElement = document.querySelector("#selection-count");
   countElement.textContent = `${selectedCommits.length || "No"} commits selected`;
@@ -181,7 +189,7 @@ function renderSelectionCount(selection) {
 // Summarize selected source lines by programming language or file type.
 function renderLanguageBreakdown(selection) {
   const selectedCommits = selection
-    ? commits.filter((d) => isCommitSelected(selection, d))
+    ? filteredCommits.filter((d) => isCommitSelected(selection, d))
     : [];
   const container = document.getElementById("language-breakdown");
   if (selectedCommits.length === 0) {
@@ -329,23 +337,117 @@ function updateScatterPlot(data, commits) {
       updateTooltipVisibility(false);
     });
 
+  // Re-evaluate the active brush against the newly positioned and filtered dots.
+  brushed({ selection: brushSelection });
+
   // The brush overlay can intercept pointer events unless the dots stay above it.
   svg.selectAll(".dots, .overlay ~ *").raise();
 }
 
-// Convert the slider percentage into a date cutoff and refresh the existing plot.
-function onTimeSliderChange() {
+// Apply any time cutoff consistently to the plot, file units, slider, and date label.
+function updateFilteredView(maxTime) {
+  commitMaxTime = maxTime;
+  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
   const slider = document.getElementById("commit-progress");
+  slider.value = String(timeScale(commitMaxTime));
   commitProgress = Number(slider.value);
-  commitMaxTime = timeScale.invert(commitProgress);
   document.getElementById("commit-time").textContent =
     commitMaxTime.toLocaleString("en", {
       dateStyle: "long",
       timeStyle: "short",
     });
-  filteredCommits = commits.filter((d) => d.datetime <= commitMaxTime);
-  // Calling renderScatterPlot here would append another SVG for every slider input.
   updateScatterPlot(data, filteredCommits);
+  updateFileDisplay(filteredCommits);
+}
+
+// Convert slider input to a time cutoff and refresh the linked views.
+function onTimeSliderChange() {
+  const slider = document.getElementById("commit-progress");
+  commitProgress = Number(slider.value);
+  commitMaxTime = timeScale.invert(commitProgress);
+  // Calling renderScatterPlot here would append another SVG for every slider input.
+  updateFilteredView(commitMaxTime);
+}
+
+// Reconcile the file rows and their line units with the currently visible commits.
+function updateFileDisplay(filteredCommits) {
+  const lines = filteredCommits.flatMap((d) => d.lines);
+  const files = d3
+    .groups(lines, (d) => d.file)
+    .map(([name, fileLines]) => ({
+      name,
+      lines: fileLines,
+      type: fileLines[0].type,
+    }))
+    .sort((a, b) => b.lines.length - a.lines.length);
+
+  const fileRows = d3
+    .select("#files")
+    .selectAll("div.file")
+    .data(files, (d) => d.name)
+    .join(
+      (enter) =>
+        enter
+          .append("div")
+          .attr("class", "file")
+          .call((row) => {
+            row.append("dt").append("code");
+            row.select("dt").append("small");
+            row.append("dd");
+          }),
+    )
+    .attr("style", (d) => `--color: ${colors(d.type)}`);
+
+  fileRows.select("dt > code").text((d) => d.name);
+  fileRows.select("dt > small").text((d) => `${d.lines.length} lines`);
+  fileRows
+    .select("dd")
+    .selectAll("div.loc")
+    .data((d) => d.lines)
+    .join("div")
+    .attr("class", "loc");
+}
+
+// Build one safe, linked narrative step for every commit in chronological order.
+function renderScatterStory(commits) {
+  const steps = d3
+    .select("#scatter-story")
+    .selectAll("div.step")
+    .data(commits, (d) => d.id)
+    .join("div")
+    .attr("class", "step");
+
+  steps.each(function (commit, index) {
+    const step = d3.select(this);
+    step.text(
+      `On ${commit.datetime.toLocaleString("en", {
+        dateStyle: "full",
+        timeStyle: "short",
+      })}, I made `,
+    );
+    step
+      .append("a")
+      .attr("href", commit.url)
+      .attr("target", "_blank")
+      .attr("rel", "noopener noreferrer")
+      .text(index > 0 ? "another glorious commit" : "my first commit, and it was glorious");
+    const fileCount = d3.rollups(
+      commit.lines,
+      (commitLines) => commitLines.length,
+      (d) => d.file,
+    ).length;
+    step
+      .append("span")
+      .text(
+        `. I edited ${commit.totalLines} lines across ${fileCount} files. Then I looked over all I had made, and I saw that it was very good.`,
+      );
+  });
+}
+
+// Use the step's commit date as the same cutoff used by the slider.
+function onStepEnter(response) {
+  const commit = d3.select(response.element).datum();
+  updateFilteredView(commit.datetime);
 }
 
 let data = await loadData();
@@ -368,3 +470,13 @@ document
   .addEventListener("input", onTimeSliderChange);
 // Initialize the displayed cutoff and filtered view to match the slider's default value.
 onTimeSliderChange();
+renderScatterStory(commits);
+
+// Drive the existing filtered views as each chronological story step enters.
+const scroller = scrollama();
+scroller
+  .setup({
+    container: "#scrolly-1",
+    step: "#scrolly-1 .step",
+  })
+  .onStepEnter(onStepEnter);
